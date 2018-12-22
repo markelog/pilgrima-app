@@ -8,13 +8,16 @@
   },
   "dependencies": {
     "chart.js": "^2.7.3",
+    "humps": "^2.0.1",
     "next": "latest",
+    "prop-types": "^15.6.2",
     "react": "^16.0.0",
     "react-chartjs-2": "^2.7.4",
     "react-dom": "^16.0.0",
-    "react-redux": "^5.0.1",
+    "react-redux": "^5.1.1",
     "redux": "^3.6.0",
     "redux-devtools-extension": "^2.13.2",
+    "redux-logger": "^3.0.6",
     "redux-thunk": "^2.1.0"
   },
   "license": "ISC"
