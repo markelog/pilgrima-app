@@ -1,7 +1,7 @@
+import {API} from './constants';
+
 export const REQUEST_REPORTS = 'REQUEST_REPORTS'
 export const RECEIVE_REPORTS = 'RECEIVE_REPORTS'
-
-const api = 'http://localhost:8080';
 
 export const requestReports = branch => ({
   type: REQUEST_REPORTS,
@@ -19,9 +19,9 @@ export const receiveReports = (branch, reports) => {
 
 const fetchReports = branch => dispatch => {
   dispatch(requestReports(branch))
-  return fetch(`${api}/reports?repository=github.com/markelog/adit&branch=${branch}`)
+  return fetch(`${API}/reports?repository=github.com/markelog/adit&branch=${branch}`)
     .then(response => response.json())
-    .then(reports => dispatch(receiveReports(branch, reports.payload)))
+    .then(reports => dispatch(receiveReports(branch, reports.payload)));
 }
 
 const shouldFetchReports = (state, reports) => {

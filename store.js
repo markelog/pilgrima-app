@@ -5,6 +5,7 @@ import thunkMiddleware from 'redux-thunk'
 import reducer from './reducers';
 
 const exampleInitialState = {
+  projects: {}
 }
 
 export function initializeStore (initialState = exampleInitialState) {

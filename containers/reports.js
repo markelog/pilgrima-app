@@ -7,7 +7,7 @@ import Chart from '../components/chart'
 class Reports extends Component {
   static propTypes = {
     branch: PropTypes.string.isRequired,
-    reports: PropTypes.array.object,
+    reports: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired
   }
@@ -25,12 +25,18 @@ class Reports extends Component {
   }
 
   render() {
-    return (<Chart reports={this.props.reports} />)
+    const { reports } = this.props;
+
+    if (reports === undefined) {
+      return null;
+    }
+
+    return (<Chart reports={reports} />)
   }
 }
 
 const mapStateToProps = state => {
-  const { branch, reportsByBranch } = state
+  const { branch = 'master', reportsByBranch } = state.reports;
 
   const {
     isFetching,
