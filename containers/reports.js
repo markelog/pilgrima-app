@@ -1,15 +1,23 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+
+import { withScreenSize } from '@vx/responsive';
+
+import Background from '../components/background';
+import Size from '../components/size';
+
 import { fetchReportsIfNeeded } from '../actions/reports'
-import Chart from '../components/chart'
+import Chart from '../components/chart-test'
 
 class Reports extends Component {
   static propTypes = {
     branch: PropTypes.string.isRequired,
     reports: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
-    dispatch: PropTypes.func.isRequired
+    dispatch: PropTypes.func.isRequired,
+    screenWidth: PropTypes.number.isRequired,
+    screenHeight: PropTypes.number.isRequired
   }
 
   componentDidMount() {
@@ -25,13 +33,51 @@ class Reports extends Component {
   }
 
   render() {
-    const { reports } = this.props;
+    const { reports, screenWidth, screenHeight } = this.props;
 
     if (reports === undefined) {
       return null;
     }
 
-    return (<Chart reports={reports} />)
+    const width = 500;
+    const height = 500;
+    const margin = { top: 20, bottom: 20, left: 20, right: 20 };
+
+    return (
+      // <div className="app">
+      //   <Background width={screenWidth} height={screenHeight} />
+      //   <div className="center">
+      //     <Size data={reports} width={screenWidth} height={screenHeight} />
+      //   </div>
+      //   <style jsx>{`
+      //     .app,
+      //     .center {
+      //       position: absolute;
+      //       top: 0;
+      //       left: 0;
+      //       right: 0;
+      //       bottom: 0;
+      //       overflow: hidden;
+      //       display: flex;
+      //       font-family: arial;
+      //       flex-direction: column;
+      //     }
+      //     .disclaimer {
+      //       margin-top: 35px;
+      //       font-size: 11px;
+      //       color: white;
+      //       opacity: 0.4;
+      //     }
+      //     .center {
+      //       align-items: center;
+      //       justify-content: center;
+      //     }
+      //   `}</style>
+
+        <Chart width={width} height={height} margin={margin} />)
+      // </div>)
+
+    // return (<Chart reports={reports} />)
   }
 }
 
@@ -53,4 +99,4 @@ const mapStateToProps = state => {
   }
 }
 
-export default connect(mapStateToProps)(Reports)
+export default connect(mapStateToProps)(withScreenSize(Reports))
