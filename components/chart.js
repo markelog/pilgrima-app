@@ -42,8 +42,9 @@ class Chart extends React.Component {
 
     const firstPoint = data[0][0];
     const currentPoint = data[0][data[0].length - 1];
-    const minPrice = Math.min(...data[0].map(y));
-    const maxPrice = Math.max(...data[0].map(y));
+    const minPrice = Math.min(...data[0].concat(data[1]).map(d => d.price));
+    const maxPrice = Math.max(...data[0].concat(data[1]).map(y));
+
     const firstPrice = y(firstPoint);
     const currentPrice = y(currentPoint);
     const maxData = [
@@ -63,9 +64,6 @@ class Chart extends React.Component {
       range: [height, 0],
       domain: [minPrice, maxPrice + 100]
     });
-
-    console.log(data[1]);
-
 
     return (
       <div>
@@ -135,6 +133,32 @@ class Chart extends React.Component {
               strokeOpacity="0.8"
               strokeWidth={1}
             />
+
+            <AreaClosed
+              stroke="transparent"
+              data={data[1]}
+              yScale={yScale}
+              x={d => xScale(x(d))}
+              y={d => yScale(y(d))}
+              fill="url(#fill)"
+            />
+            <AreaClosed
+              stroke="transparent"
+              data={data[1]}
+              yScale={yScale}
+              x={d => xScale(x(d))}
+              y={d => yScale(y(d))}
+              fill="url(#dLines)"
+            />
+            <LinePath
+              data={data[1]}
+              x={d => xScale(x(d))}
+              y={d => yScale(y(d))}
+              stroke="#6086d6"
+              strokeOpacity="0.8"
+              strokeWidth={1}
+            />
+
             <MinPrice
               data={minData}
               x={d => xScale(x(d))}
