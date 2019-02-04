@@ -2,9 +2,9 @@
   "name": "pilgrima",
   "private": true,
   "scripts": {
-    "dev": "node server.js",
+    "start": "node server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "production": "NODE_ENV=production node server.js"
   },
   "dependencies": {
     "@vx/axis": "0.0.183",
