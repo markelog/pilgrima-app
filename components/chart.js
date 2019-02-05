@@ -79,14 +79,14 @@ class Chart extends React.Component {
             fromOpacity={0.2}
             toOpacity={0}
           />
-          <PatternLines
+          {/* <PatternLines
             id="dLines"
             height={6}
             width={6}
             stroke="#27273f"
             strokeWidth={1}
             orientation={['diagonal']}
-          />
+          /> */}
           <Group top={margin.top} left={margin.left}>
             <AxisBottom
               scale={xScale}
@@ -175,10 +175,12 @@ class Chart extends React.Component {
               onMouseMove={event => {
                 const { x: xPoint } = localPoint(this.svg, event);
                 const x0 = xScale.invert(xPoint);
-                const index = bisectDate(data, x0, 1);
+                const index = bisectDate(data[0], x0, 1);
+
                 const d0 = data[0][index - 1];
                 const d1 = data[0][index];
                 const d = x0 - xScale(x(d0)) > xScale(x(d1)) - x0 ? d1 : d0;
+
                 showTooltip({
                   tooltipData: d,
                   tooltipLeft: xScale(x(d)),
