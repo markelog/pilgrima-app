@@ -2,7 +2,7 @@ import { Line } from '@vx/shape';
 
 export default ({ from, to, tooltipLeft, tooltipTop }) => {
   return (
-    <g>
+    [<g>
       <Line
         from={from}
         to={to}
@@ -11,22 +11,24 @@ export default ({ from, to, tooltipLeft, tooltipTop }) => {
         style={{ pointerEvents: 'none' }}
         strokeDasharray="2,2"
       />
-      <circle
-        cx={tooltipLeft}
-        cy={tooltipTop}
-        r={8}
-        fill="#00f1a1"
-        fillOpacity={0.2}
-        style={{ pointerEvents: 'none' }}
-      />
-      <circle
-        cx={tooltipLeft}
-        cy={tooltipTop}
-        r={4}
-        fill="#00f1a1"
-        fillOpacity={0.8}
-        style={{ pointerEvents: 'none' }}
-      />
-    </g>
+    </g>,
+    <g>
+    <circle
+      cx={tooltipLeft}
+      cy={tooltipTop}
+      r={8}
+      fill="#00f1a1"
+      fillOpacity={0.2}
+      style={{ pointerEvents: 'none' }}
+    />
+    <circle
+      cx={tooltipLeft}
+      cy={tooltipTop}
+      r={4}
+      fill="#00f1a1"
+      fillOpacity={0.8}
+      style={{ pointerEvents: 'none' }}
+    />
+    </g>]
   );
 };

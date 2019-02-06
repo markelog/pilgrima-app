@@ -10,7 +10,8 @@ import { localPoint } from '@vx/event';
 import { bisector } from 'd3-array';
 
 import Tooltips from './tooltips';
-import HoverLine from './hoverline';
+import HoverLine from './hoverline1';
+import Circle from './circle';
 import MaxPrice from './maxprice';
 import MinPrice from './minprice';
 import formatPrice from '../utils/formatPrice';
@@ -173,18 +174,23 @@ class Chart extends React.Component {
               fill="transparent"
               onMouseLeave={event => hideTooltip()}
               onMouseMove={event => {
-                const { x: xPoint } = localPoint(this.svg, event);
-                const x0 = xScale.invert(xPoint);
-                const index = bisectDate(data[0], x0, 1);
+                const getData = (data) => {
+                  const { x: xPoint } = localPoint(this.svg, event);
+                  const x0 = xScale.invert(xPoint);
+                  const index = bisectDate(data, x0, 1);
+                  const d0 = data[index - 1];
+                  const d1 = data[index];
 
-                const d0 = data[0][index - 1];
-                const d1 = data[0][index];
-                const d = x0 - xScale(x(d0)) > xScale(x(d1)) - x0 ? d1 : d0;
+                  return x0 - xScale(x(d0)) > xScale(x(d1)) - x0 ? d1 : d0
+                }
+
+                const size = getData(data[0])
+                const gzip = getData(data[1])
 
                 showTooltip({
-                  tooltipData: d,
-                  tooltipLeft: xScale(x(d)),
-                  tooltipTop: yScale(y(d))
+                  tooltipData: [size, gzip],
+                  tooltipLeft: [xScale(x(size)), xScale(x(gzip))],
+                  tooltipTop: [yScale(y(size)), yScale(y(gzip))]
                 });
               }}
             />
@@ -192,26 +198,51 @@ class Chart extends React.Component {
           {tooltipData &&
             <HoverLine
               from={{
-                x: tooltipLeft,
-                y: yScale(y(maxData[0]))
+                x: tooltipLeft[1],
+                y: yScale(y(maxData[1]))
               }}
               to={{
-                x: tooltipLeft,
+                x: tooltipLeft[1],
                 y: yScale(y(minData[0]))
               }}
-              tooltipLeft={tooltipLeft}
-              tooltipTop={tooltipTop}
+              tooltipLeft={tooltipLeft[1]}
+              tooltipTop={tooltipTop[1]}
             />}
+
+          {tooltipData &&
+            <Circle
+              left={tooltipLeft[0]}
+              top={tooltipTop[0]}
+            />}
+
+          {tooltipData &&
+            <Circle
+              left={tooltipLeft[1]}
+              top={tooltipTop[1]}
+            />}
+
         </svg>
         {tooltipData &&
           <Tooltips
-            yTop={tooltipTop - 12}
-            yLeft={tooltipLeft + 12}
-            yLabel={formatPrice(y(tooltipData))}
+            yTop={tooltipTop[0] - 12}
+            yLeft={tooltipLeft[0] + 12}
+            yLabel={formatPrice(y(tooltipData[0]))}
             xTop={yScale(y(minData[0])) + 4}
-            xLeft={tooltipLeft}
-            xLabel={formatDate(x(tooltipData))}
-          />}
+            xLeft={tooltipLeft[0]}
+            xLabel={formatDate(x(tooltipData[0]))}
+          />
+        }
+
+        {tooltipData &&
+          <Tooltips
+            yTop={tooltipTop[1] - 12}
+            yLeft={tooltipLeft[1] + 12}
+            yLabel={formatPrice(y(tooltipData[1]))}
+            xTop={yScale(y(minData[0])) + 4}
+            xLeft={tooltipLeft[1]}
+            xLabel={formatDate(x(tooltipData[1]))}
+          />
+        }
       </div>
     );
   }
