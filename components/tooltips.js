@@ -20,7 +20,6 @@ export default ({ yTop, yLeft, yLabel, xTop, xLeft, xLabel }) => {
           color: 'white'
         }}
       >
-        <a href="https://yandex.ru">yandex</a>
         {yLabel}
       </Tooltip>
     </div>

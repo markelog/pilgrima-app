@@ -205,8 +205,6 @@ class Chart extends React.Component {
                 x: tooltipLeft[1],
                 y: yScale(y(minData[0]))
               }}
-              tooltipLeft={tooltipLeft[1]}
-              tooltipTop={tooltipTop[1]}
             />}
 
           {tooltipData &&
