@@ -13,6 +13,7 @@ import Chart from '../components/chart-test'
 class Reports extends Component {
   static propTypes = {
     branch: PropTypes.string.isRequired,
+    project: PropTypes.string.isRequired,
     reports: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
     dispatch: PropTypes.func.isRequired,
@@ -21,15 +22,17 @@ class Reports extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, branch } = this.props;
-    dispatch(fetchReportsIfNeeded(branch))
+    const { dispatch, project, branch } = this.props;
+    dispatch(fetchReportsIfNeeded(project, branch))
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.branch !== this.props.branch) {
-      const { dispatch, branch } = nextProps
-      dispatch(fetchReportsIfNeeded(branch))
+    if (nextProps.branch === this.props.branch) {
+      return
     }
+
+    const { dispatch, project, branch } = nextProps
+    dispatch(fetchReportsIfNeeded(project, branch))
   }
 
   render() {

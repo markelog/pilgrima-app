@@ -3,41 +3,35 @@ import {API} from './constants';
 export const REQUEST_REPORTS = 'REQUEST_REPORTS'
 export const RECEIVE_REPORTS = 'RECEIVE_REPORTS'
 
-export const requestReports = branch => ({
+export const requestReports = (project, branch) => ({
   type: REQUEST_REPORTS,
+  project,
   branch
 })
 
-export const receiveReports = (branch, reports) => {
+export const receiveReports = (project, branch, reports) => {
   return ({
     type: RECEIVE_REPORTS,
+    project,
     branch,
     reports,
     receivedAt: Date.now()
   })
 }
 
-const fetchReports = branch => dispatch => {
-  dispatch(requestReports(branch))
-  return fetch(`${API}/reports?repository=github.com/markelog/adit&branch=${branch}`)
+const fetchReports = (project, branch) => dispatch => {
+  dispatch(requestReports(project, branch));
+  return fetch(`${API}/reports?repository=${project}&branch=${branch}`)
     .then(response => response.json())
-    .then(reports => dispatch(receiveReports(branch, reports.payload)));
+    .then(reports => dispatch(receiveReports(project, branch, reports.payload)));
 }
 
-const shouldFetchReports = (state, reports) => {
+const shouldFetchReports = (state, project, branch) => {
   return true;
-  const posts = state.postsByBranch[reports]
-  if (!posts) {
-    return true
-  }
-  if (posts.isFetching) {
-    return false
-  }
-  return posts.didInvalidate
 }
 
-export const fetchReportsIfNeeded = branch => (dispatch, getState) => {
-  if (shouldFetchReports(getState(), branch)) {
-    return dispatch(fetchReports(branch))
+export const fetchReportsIfNeeded = (project, branch) => (dispatch, getState) => {
+  if (shouldFetchReports(getState(), project, branch)) {
+    return dispatch(fetchReports(project, branch))
   }
 }

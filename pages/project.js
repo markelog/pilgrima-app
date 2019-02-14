@@ -6,7 +6,7 @@ import { withRouter } from 'next/router'
 import Reports from '../containers/reports'
 
 const Project = withRouter((props) => {
-  const {project} = props;
+  const {project} = props.router.query;
 
   return <Reports project={project} />
 })
